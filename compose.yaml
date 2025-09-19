@@ -15,6 +15,12 @@ services:
       test: [ "CMD-SHELL", "pg_isready -U $(cat /run/secrets/db_user) -d postgres" ]
       timeout: 20s
       retries: 5
-
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    restart: always
+    ports:
+      # Bind to localhost only for security
+      - '9090:80'    # Web interface
+      - '25:25'    # SMTP server (using non-standard port)
 volumes:
   postgres_data:

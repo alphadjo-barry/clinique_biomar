@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/utilisateurs")
 public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;
 
-    @PostMapping(value = "/utilisateurs")
+    @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody UtilisateurDto utilisateurDto){
 
         return ResponseEntity.ok(utilisateurService.save(utilisateurDto));

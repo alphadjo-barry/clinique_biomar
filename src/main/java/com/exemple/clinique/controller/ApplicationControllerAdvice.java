@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 
 @ControllerAdvice
@@ -23,6 +23,17 @@ public class ApplicationControllerAdvice {
 
         ErrorEntity error = ErrorEntity.builder()
                 .code("409")
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorEntity> handleBadCredentialsException(IllegalArgumentException exception){
+
+        ErrorEntity error = ErrorEntity.builder()
+                .code("401")
                 .message(exception.getMessage())
                 .build();
 
