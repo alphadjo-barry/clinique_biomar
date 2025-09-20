@@ -25,7 +25,7 @@ public class RoleDto {
 
         return RoleDto.builder()
                 .id(role.getId())
-                .name("ROLE"+role.getName())
+                .name("ROLE_"+role.getName())
                 .build();
     }
 }

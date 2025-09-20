@@ -14,6 +14,8 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -45,15 +47,15 @@ public class JwtTokenService {
 
     private String createToken(Authentication authentication) {
 
-        String authorities = authentication.getAuthorities().stream()
+        Set<String> authorities = authentication.getAuthorities().stream()
                                 .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.joining(", "));
+                                .collect(Collectors.toSet());
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .subject(authentication.getName())
                 .issuedAt(Instant.now())
                 .expiresAt(Instant.now().plusSeconds(60 * 30)) // 30 Minutes
-                .claim("authorities", authorities)
+                .claim("roles", authorities)
                 .build();
 
         JwsHeader jwsHeader =  JwsHeader.with(MacAlgorithm.HS256).build();

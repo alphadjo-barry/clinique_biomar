@@ -10,7 +10,6 @@ import com.exemple.clinique.service.contracts.UtilisateurService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
-import lombok.Builder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +30,24 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                 .map(UtilisateurDto::fromEntity)
                 .toList();
     }
+
+    @Override
+    public void update(Long id, UtilisateurDto utilisateurDto) {
+
+        Utilisateur utilisateur = this.utilisateurRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Utilisateur not found !")
+        );
+
+        Utilisateur other =  this.utilisateurRepository.findByEmail(utilisateurDto.getEmail()).orElse(null);
+        if(other != null && !other.getId().equals(id)){
+            throw new IllegalArgumentException("Utilisateur already exists");
+        }
+
+        utilisateur.setEmail(utilisateurDto.getEmail());
+
+        this.utilisateurRepository.save(utilisateur);
+    }
+
 
     @Override
     public UtilisateurDto findById(Long id) {
@@ -68,6 +85,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return UtilisateurDto.fromEntity(savedUtilisateur);
     }
 
+
+
     @Override
     public void delete(Long id) {
 
@@ -78,5 +97,33 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateurRepository.deleteById(id);
     }
 
+    @Override
+    public boolean enabledById(Long id) {
 
+        Utilisateur utilisateur = utilisateurRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Utilisateur not found !"));
+
+        if(utilisateur.isEnabled()){
+            throw new IllegalArgumentException("Utilisateur is already enabled");
+        }
+        utilisateur.setActive(true);
+
+        return this.utilisateurRepository.save(utilisateur).isActive();
+    }
+
+    @Override
+    public boolean disabledById(Long id) {
+
+        Utilisateur utilisateur = utilisateurRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Utilisateur not found !"));
+
+        if(!utilisateur.isEnabled()){
+            throw new IllegalArgumentException("Utilisateur is already disabled");
+        }
+
+        utilisateur.setActive(false);
+
+        return this.utilisateurRepository.save(utilisateur).isActive();
+
+    }
 }

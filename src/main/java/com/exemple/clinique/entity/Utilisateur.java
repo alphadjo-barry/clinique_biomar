@@ -29,7 +29,7 @@ public class Utilisateur extends AbstractEntity implements UserDetails {
     @JoinTable(name = "utilisateur_role", joinColumns = @JoinColumn(name = "utilisateur_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    private boolean is_active = false;
+    private boolean isActive = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -45,21 +45,21 @@ public class Utilisateur extends AbstractEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return this.is_active;
+        return this.isActive;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.is_active;
+        return this.isActive;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return is_active;
+        return isActive;
     }
 
     @Override
     public boolean isEnabled() {
-        return is_active;
+        return isActive;
     }
 }

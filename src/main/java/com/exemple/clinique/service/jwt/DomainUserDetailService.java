@@ -27,7 +27,8 @@ public class DomainUserDetailService implements UserDetailsService {
 
         Set<SimpleGrantedAuthority> authorities = getAuthorities(utilisateur);
 
-        return new User(utilisateur.getEmail(),
+        return new User(
+                        utilisateur.getEmail(),
                         utilisateur.getPassword(),
                         utilisateur.isEnabled(),
                         utilisateur.isEnabled(),

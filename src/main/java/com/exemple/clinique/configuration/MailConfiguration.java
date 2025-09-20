@@ -22,7 +22,7 @@ public class MailConfiguration {
         props.put("mail.smtp.auth", "false");
         props.put("mail.debug", "true");
         mailSender.setJavaMailProperties(props);
-        
+
         return mailSender;
     }
 

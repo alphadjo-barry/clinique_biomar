@@ -29,6 +29,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public void update(Long id, RoleDto roleDto) {
+
+    }
+
+    @Override
     public RoleDto findById(Long id) {
 
         Role role = this.roleRepository.findById(id).orElseThrow(
