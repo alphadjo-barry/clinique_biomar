@@ -57,11 +57,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                 .orElseThrow(()-> new EntityNotFoundException("Utilisateur not found !"));
     }
 
+    // Créer par tout le monde
     @Override
     public UtilisateurDto save(UtilisateurDto utilisateurDto) {
         return saveWithRole(utilisateurDto, RoleType.PATIENT);
     }
 
+    // Créer par admin
     @Override
     public UtilisateurDto saveMedecin(UtilisateurDto utilisateurDto) {
         return saveWithRole(utilisateurDto, RoleType.MEDECIN);
@@ -72,6 +74,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return saveWithRole(utilisateurDto, RoleType.SECRETAIRE);
     }
 
+    // Créer par admin
     @Override
     public UtilisateurDto saveAdmin(UtilisateurDto utilisateurDto) {
         return saveWithRole(utilisateurDto, RoleType.ADMIN);
