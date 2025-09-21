@@ -66,14 +66,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Utilisateur utilisateur = UtilisateurDto.toEntity(utilisateurDto);
         utilisateur.setPassword(bCryptPasswordEncoder.encode(utilisateurDto.getPassword()));
 
-        RoleType roleType;
 
-        if(utilisateurRepository.count() == 0)
-            roleType = RoleType.ADMIN;
-        else roleType = RoleType.PATIENT;
-
-        Role role = roleRepository.findByName(roleType.name()).orElseGet(
-                () -> roleRepository.save(Role.builder().name(roleType.name()).build()));
+        Role role = roleRepository.findByName(RoleType.SECRETARY.name()).orElseGet(
+                () -> roleRepository.save(Role.builder().name(RoleType.SECRETARY.name()).build()));
 
         if(utilisateur.getRoles() == null)
             utilisateur.setRoles(new HashSet<>());
@@ -126,4 +121,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return this.utilisateurRepository.save(utilisateur).isActive();
 
     }
+
+
+
 }
