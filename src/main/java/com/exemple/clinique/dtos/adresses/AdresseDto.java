@@ -2,8 +2,7 @@ package com.exemple.clinique.dtos.adresses;
 
 import com.exemple.clinique.entity.Adresse;
 import com.exemple.clinique.entity.Patient;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

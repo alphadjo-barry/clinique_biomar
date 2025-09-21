@@ -27,6 +27,6 @@ public class OrdonnanceDetail extends AbstractEntity{
     private String instructions;
 
     @ManyToOne
-    @JoinColumn(name = "ordonnance_detail_id")
+    @JoinColumn(name = "ordonnance_id")
     private Ordonnance ordonnance;
 }
