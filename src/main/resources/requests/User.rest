@@ -11,7 +11,6 @@ Content-Type: application/json
   "password": "123456789"
 }
 
-
 ###
 
 //Authentication 2
@@ -29,7 +28,7 @@ Content-Type: application/json
 
 GET  http://localhost:8080/api/v1/utilisateurs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbHBoYWRpb2JpeWFAZ21haWwuY29tIiwiZXhwIjoxNzU4NDA3MzQ1LCJpYXQiOjE3NTg0MDU1NDUsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.OMs6KYkcJqsT76DZZkCqQcBMkfUTz9TWeMnvJDG3sFM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbHBoYWRpb2JpeWFAZ21haWwuY29tIiwiZXhwIjoxNzU4NDExOTE5LCJpYXQiOjE3NTg0MTAxMTksInJvbGVzIjpbIlJPTEVfQURNSU4iXX0.QSPaN8btg1OpXCbjLJSUEDkJb8PJGjxmjLwuPx5wAIs
 
 ###
 // Get users by id
@@ -52,7 +51,6 @@ Content-Type: application/json
 }
 
 ###
-
 //inscription 2
 
 POST  http://localhost:8080/api/v1/utilisateurs
