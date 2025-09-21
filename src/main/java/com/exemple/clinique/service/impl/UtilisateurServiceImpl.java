@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -58,29 +59,39 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public UtilisateurDto save(UtilisateurDto utilisateurDto) {
+        return saveWithRole(utilisateurDto, RoleType.PATIENT);
+    }
 
-        if(utilisateurRepository.findByEmail(utilisateurDto.getEmail()).isPresent()){
-            throw new IllegalArgumentException("Utilisateur already exists");
-        }
+    @Override
+    public UtilisateurDto saveMedecin(UtilisateurDto utilisateurDto) {
+        return saveWithRole(utilisateurDto, RoleType.MEDECIN);
+    }
+
+    @Override
+    public UtilisateurDto saveSecretaire(UtilisateurDto utilisateurDto) {
+        return saveWithRole(utilisateurDto, RoleType.SECRETAIRE);
+    }
+
+    @Override
+    public UtilisateurDto saveAdmin(UtilisateurDto utilisateurDto) {
+        return saveWithRole(utilisateurDto, RoleType.ADMIN);
+    }
+
+    private UtilisateurDto saveWithRole(UtilisateurDto utilisateurDto, RoleType roleType) {
 
         Utilisateur utilisateur = UtilisateurDto.toEntity(utilisateurDto);
         utilisateur.setPassword(bCryptPasswordEncoder.encode(utilisateurDto.getPassword()));
 
+        Role role = roleRepository.findByName(roleType.name())
+                .orElseGet(() -> roleRepository.save(Role.builder()
+                        .name(roleType.name())
+                        .build()));
 
-        Role role = roleRepository.findByName(RoleType.SECRETARY.name()).orElseGet(
-                () -> roleRepository.save(Role.builder().name(RoleType.SECRETARY.name()).build()));
-
-        if(utilisateur.getRoles() == null)
-            utilisateur.setRoles(new HashSet<>());
-
-        utilisateur.getRoles().add(role);
+        utilisateur.setRoles(new HashSet<>(Collections.singletonList(role)));
 
         Utilisateur savedUtilisateur = utilisateurRepository.save(utilisateur);
-
         return UtilisateurDto.fromEntity(savedUtilisateur);
     }
-
-
 
     @Override
     public void delete(Long id) {
@@ -121,7 +132,4 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return this.utilisateurRepository.save(utilisateur).isActive();
 
     }
-
-
-
 }

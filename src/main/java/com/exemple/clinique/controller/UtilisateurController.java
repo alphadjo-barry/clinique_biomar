@@ -30,31 +30,31 @@ public class UtilisateurController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','PATIENT')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> findAll(){
         return ResponseEntity.ok(utilisateurService.findAll());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','PATIENT')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> findById(@PathVariable Long id){
         return ResponseEntity.ok(utilisateurService.findById(id));
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','PATIENT')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UtilisateurDto utilisateurDto){
         return ResponseEntity.ok(utilisateurService.save(utilisateurDto));
     }
 
     @PatchMapping("/enable")
-    @PreAuthorize("hasAnyRole('ADMIN','PATIENT')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> enableById(@RequestBody Long id){
         return ResponseEntity.ok(utilisateurService.enabledById(id));
     }
 
     @PatchMapping("/disable")
-    @PreAuthorize("hasAnyRole('ADMIN','PATIENT')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> disableById(@RequestBody Long id){
         return ResponseEntity.ok(utilisateurService.disabledById(id));
     }

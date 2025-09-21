@@ -4,6 +4,7 @@ import com.exemple.clinique.dtos.adresses.AdresseDto;
 import com.exemple.clinique.dtos.consultations.ConsultationDto;
 import com.exemple.clinique.dtos.rdvs.RdvDto;
 
+import com.exemple.clinique.entity.Adresse;
 import com.exemple.clinique.entity.Consultation;
 import com.exemple.clinique.entity.Patient;
 
@@ -72,6 +73,7 @@ public class PatientDto {
 //                              .collect(Collectors.toList()): new ArrayList<>())
                 .adresses(
                         patient.getAdresses() != null ? patient.getAdresses().stream()
+                                .filter(Adresse::isMain)
                                 .map(AdresseDto::fromEntity)
                                 .collect(Collectors.toList()): new ArrayList<>()
                 )

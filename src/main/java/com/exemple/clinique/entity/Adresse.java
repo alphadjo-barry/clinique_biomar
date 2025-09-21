@@ -24,4 +24,6 @@ public class Adresse extends AbstractEntity{
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
+
+    private boolean isMain = false;
 }

@@ -2,8 +2,8 @@ package com.exemple.clinique.enums;
 
 public enum RoleType {
     ADMIN,
-    DOCTOR,
+    MEDECIN,
     PATIENT,
-    SECRETARY,
+    SECRETAIRE,
     INFIRMIER
 }
