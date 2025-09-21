@@ -4,5 +4,6 @@ public enum RoleType {
     ADMIN,
     DOCTOR,
     PATIENT,
-    SECRETARY
+    SECRETARY,
+    INFIRMIER
 }

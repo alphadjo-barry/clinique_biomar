@@ -32,6 +32,7 @@ public class Medecin extends AbstractEntity{
     private String phone;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "utilisateur_id")
     private Utilisateur utilisateur;
 
     @OneToMany(mappedBy = "medecin")
@@ -39,7 +40,7 @@ public class Medecin extends AbstractEntity{
 
     @ManyToMany
     @JoinTable(name = "medecin_disponibilites",
-            joinColumns = @JoinColumn(name = "medecin_id"),
-            inverseJoinColumns = @JoinColumn(name = "disponibilite_id"))
+    joinColumns = @JoinColumn(name = "medecin_id"),
+    inverseJoinColumns = @JoinColumn(name = "disponibilite_id"))
     private List<Disponibilite> disponibilites = new ArrayList<>();
 }

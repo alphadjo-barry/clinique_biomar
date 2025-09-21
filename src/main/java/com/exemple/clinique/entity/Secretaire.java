@@ -29,6 +29,7 @@ public class Secretaire extends AbstractEntity{
 
     private String phone;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "utilisateur_id")
     private Utilisateur utilisateur;
 }
