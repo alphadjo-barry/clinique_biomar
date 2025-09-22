@@ -35,12 +35,9 @@ public class Patient extends AbstractEntity{
 
     private String phone;
 
-    @OneToMany(mappedBy = "patient")
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     List<Rdv> rdvs = new ArrayList<>();
-
-    @OneToMany(mappedBy = "patient")
-    List<Consultation> consultations = new ArrayList<>();
-
+    
     @OneToMany
     @JoinColumn(name = "patient_id")
     private List<Adresse> adresses = new ArrayList<>();

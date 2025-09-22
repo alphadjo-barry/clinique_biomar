@@ -20,6 +20,6 @@ public class Consultation extends AbstractEntity{
     private String plaintes;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
+    @JoinColumn(name = "rdv_id")
+    private Rdv rdv;
 }

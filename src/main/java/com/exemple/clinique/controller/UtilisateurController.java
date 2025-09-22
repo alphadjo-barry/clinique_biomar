@@ -1,5 +1,6 @@
 package com.exemple.clinique.controller;
 
+import com.exemple.clinique.dtos.ValidationRequest;
 import com.exemple.clinique.dtos.utilisateurs.UtilisateurDto;
 import com.exemple.clinique.service.contracts.UtilisateurService;
 import jakarta.validation.Valid;
@@ -16,49 +17,46 @@ public class UtilisateurController {
     private final UtilisateurService utilisateurService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> save(@Valid @RequestBody UtilisateurDto utilisateurDto){
 
         return ResponseEntity.ok(utilisateurService.save(utilisateurDto));
     }
 
     @DeleteMapping
-    @PreAuthorize("hasAnyRole('ADMIN','PATIENT')")
     public ResponseEntity<?> delete(@RequestBody Long id){
         utilisateurService.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> findAll(){
         return ResponseEntity.ok(utilisateurService.findAll());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> findById(@PathVariable Long id){
         return ResponseEntity.ok(utilisateurService.findById(id));
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UtilisateurDto utilisateurDto){
         return ResponseEntity.ok(utilisateurService.save(utilisateurDto));
     }
 
+    @PatchMapping("/validated")
+    public ResponseEntity<?> enableAccount(@RequestBody ValidationRequest code){
+        utilisateurService.enabledAccount(code);
+        return ResponseEntity.ok().build();
+    }
+
     @PatchMapping("/enable")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<?> enableById(@RequestBody Long id){
+    public ResponseEntity<?> enabledById(@RequestBody Long id){
         return ResponseEntity.ok(utilisateurService.enabledById(id));
     }
 
     @PatchMapping("/disable")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> disableById(@RequestBody Long id){
         return ResponseEntity.ok(utilisateurService.disabledById(id));
     }
-
-
 
 }

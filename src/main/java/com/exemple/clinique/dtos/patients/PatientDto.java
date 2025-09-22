@@ -77,11 +77,6 @@ public class PatientDto {
                                 .map(AdresseDto::fromEntity)
                                 .collect(Collectors.toList()): new ArrayList<>()
                 )
-                .consultations(
-                        patient.getConsultations() != null ? patient.getConsultations().stream()
-                                .map(ConsultationDto::fromEntity)
-                                .collect(Collectors.toList()): new ArrayList<>()
-                )
                 .build();
     }
 }

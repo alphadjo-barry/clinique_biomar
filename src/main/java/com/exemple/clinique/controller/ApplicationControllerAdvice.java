@@ -28,7 +28,7 @@ public class ApplicationControllerAdvice {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
-
+    
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorEntity> handleBadCredentialsException(IllegalArgumentException exception){
 

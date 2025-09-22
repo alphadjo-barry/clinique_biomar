@@ -1,18 +1,22 @@
 package com.exemple.clinique.service.impl;
 
+import com.exemple.clinique.dtos.ValidationRequest;
 import com.exemple.clinique.dtos.utilisateurs.UtilisateurDto;
 import com.exemple.clinique.entity.Role;
 import com.exemple.clinique.entity.Utilisateur;
+import com.exemple.clinique.entity.Validation;
 import com.exemple.clinique.enums.RoleType;
 import com.exemple.clinique.repository.contracts.RoleRepository;
 import com.exemple.clinique.repository.contracts.UtilisateurRepository;
 import com.exemple.clinique.service.contracts.UtilisateurService;
+import com.exemple.clinique.service.contracts.ValidationService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +28,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     private final UtilisateurRepository utilisateurRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
+    private final ValidationService validationService;
 
     @Override
     public List<UtilisateurDto> findAll() {
@@ -69,6 +74,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return saveWithRole(utilisateurDto, RoleType.MEDECIN);
     }
 
+    // Créer par admin
     @Override
     public UtilisateurDto saveSecretaire(UtilisateurDto utilisateurDto) {
         return saveWithRole(utilisateurDto, RoleType.SECRETAIRE);
@@ -93,6 +99,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setRoles(new HashSet<>(Collections.singletonList(role)));
 
         Utilisateur savedUtilisateur = utilisateurRepository.save(utilisateur);
+        validationService.saveValidation(savedUtilisateur);
         return UtilisateurDto.fromEntity(savedUtilisateur);
     }
 
@@ -107,14 +114,36 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    public void enabledAccount(ValidationRequest request) {
+
+        Validation validation = validationService.findByCode(request.code());
+
+        if(validation.getExpiredAt().isBefore(Instant.now())){
+            throw new IllegalArgumentException("Validation code is expired");
+        }
+
+        Utilisateur utilisateur = validation.getUtilisateur();
+        if(utilisateur.isEnabled()){
+            throw new IllegalArgumentException("Utilisateur is already enabled");
+        }
+
+        utilisateur.setActive(true);
+
+        validationService.setValidatedAt(validation);
+
+         this.utilisateurRepository.save(utilisateur);
+    }
+
+    @Override
     public boolean enabledById(Long id) {
 
         Utilisateur utilisateur = utilisateurRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Utilisateur not found !"));
 
         if(utilisateur.isEnabled()){
-            throw new IllegalArgumentException("Utilisateur is already enabled");
+            throw new IllegalArgumentException("Utilisateur is already disabled");
         }
+
         utilisateur.setActive(true);
 
         return this.utilisateurRepository.save(utilisateur).isActive();
