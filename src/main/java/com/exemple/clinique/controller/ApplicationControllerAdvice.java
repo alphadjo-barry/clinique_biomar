@@ -22,7 +22,7 @@ public class ApplicationControllerAdvice {
     public ResponseEntity<ErrorEntity> handleBadCredentialsException(BadCredentialsException exception){
 
         ErrorEntity error = ErrorEntity.builder()
-                .code("409")
+                .code("400")
                 .message(exception.getMessage())
                 .build();
 
@@ -44,7 +44,7 @@ public class ApplicationControllerAdvice {
     public ResponseEntity<ErrorEntity> handleEntityExistsException(EntityExistsException exception){
 
         ErrorEntity error = ErrorEntity.builder()
-                .code("409")
+                .code("400")
                 .message(exception.getMessage())
                 .build();
 
@@ -55,7 +55,7 @@ public class ApplicationControllerAdvice {
     public ResponseEntity<ErrorEntity> handleEntityNotFoundException(EntityNotFoundException exception){
 
         ErrorEntity error = ErrorEntity.builder()
-                .code("409")
+                .code("400")
                 .message(exception.getMessage())
                 .build();
 

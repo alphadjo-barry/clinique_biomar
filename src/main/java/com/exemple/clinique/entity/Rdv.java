@@ -1,6 +1,6 @@
 package com.exemple.clinique.entity;
 
-import com.exemple.clinique.enums.RdvType;
+import com.exemple.clinique.enums.RdvStatut;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -28,7 +27,6 @@ public class Rdv extends AbstractEntity{
 
     private LocalTime startEnd;
 
-    private RdvType rdvType;
     private RdvStatut rdvStatut;
 
     @ManyToOne

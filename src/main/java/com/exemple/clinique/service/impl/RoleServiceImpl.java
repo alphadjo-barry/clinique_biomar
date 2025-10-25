@@ -31,14 +31,23 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void update(Long id, RoleDto roleDto) {
 
+        Role role = roleRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Role with id " + id + " not found"));
+
+        Role other = roleRepository.findByName(roleDto.getName()).orElse(null);
+        if(other != null && !other.getId().equals(id)){
+            throw new IllegalArgumentException("Role already exists with other role");
+        }
+
+        role.setName(roleDto.getName());
+        this.roleRepository.save(role);
     }
 
     @Override
     public RoleDto findById(Long id) {
 
         Role role = this.roleRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Role not found !")
-        );
+                () -> new EntityNotFoundException("Role not found !"));
 
         return RoleDto.fromEntity(role);
     }

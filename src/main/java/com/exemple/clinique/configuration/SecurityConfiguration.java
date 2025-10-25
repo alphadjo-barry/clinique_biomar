@@ -31,6 +31,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/utilisateurs").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/utilisateurs/activation").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(
                         jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));

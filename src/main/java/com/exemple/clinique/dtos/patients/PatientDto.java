@@ -5,7 +5,6 @@ import com.exemple.clinique.dtos.consultations.ConsultationDto;
 import com.exemple.clinique.dtos.rdvs.RdvDto;
 
 import com.exemple.clinique.entity.Adresse;
-import com.exemple.clinique.entity.Consultation;
 import com.exemple.clinique.entity.Patient;
 
 import jakarta.validation.constraints.NotBlank;
@@ -34,7 +33,7 @@ public class PatientDto {
     private String sexe;
     @NotBlank(message = "Date of birth is required")
     private Date dateOfBirth;
-    @NotBlank(message = "No Securite Social is required")
+    @NotBlank(message = "Securite Social number is required")
     private String noSecuriteSocial;
     @NotBlank(message = "Phone is required")
     private String phone;
@@ -67,13 +66,9 @@ public class PatientDto {
                 .dateOfBirth(patient.getDateOfBirth())
                 .noSecuriteSocial(patient.getNoSecuriteSocial())
                 .phone(patient.getPhone())
-//              .rdvs(
-//                      patient.getRdvs() != null ? patient.getRdvs().stream()
-//                              .map(RdvDto::fromEntity)
-//                              .collect(Collectors.toList()): new ArrayList<>())
                 .adresses(
                         patient.getAdresses() != null ? patient.getAdresses().stream()
-                                .filter(Adresse::isMain)
+                                .filter(Adresse::isActualAddress)
                                 .map(AdresseDto::fromEntity)
                                 .collect(Collectors.toList()): new ArrayList<>()
                 )

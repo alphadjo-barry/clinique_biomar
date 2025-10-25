@@ -1,6 +1,5 @@
 package com.exemple.clinique.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -21,11 +20,8 @@ public class Validation extends AbstractEntity{
 
     private Instant generatedAt;
 
-    private boolean isValidated = false;
-
     private Instant expiredAt;
 
-    @Column(nullable = true)
     private Instant validatedAt;
 
     @ManyToOne

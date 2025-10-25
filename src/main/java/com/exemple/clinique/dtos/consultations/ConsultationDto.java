@@ -1,7 +1,6 @@
 package com.exemple.clinique.dtos.consultations;
 
 import com.exemple.clinique.entity.Consultation;
-
 import com.exemple.clinique.entity.Rdv;
 import jakarta.persistence.Lob;
 
@@ -13,20 +12,18 @@ import lombok.Builder;
 public class ConsultationDto {
 
     private Long id;
-
     @Lob
     private String plaintes;
-
     private Rdv rdv;
 
     public static Consultation toEntity(ConsultationDto consultationDto){
-        return com.exemple.clinique.entity.Consultation.builder()
+        return Consultation.builder()
                 .plaintes(consultationDto.plaintes)
                 .rdv(consultationDto.rdv)
                 .build();
     }
 
-    public static ConsultationDto fromEntity(com.exemple.clinique.entity.Consultation consultation){
+    public static ConsultationDto fromEntity(Consultation consultation){
 
         return ConsultationDto.builder()
                 .id(consultation.getId())
@@ -34,5 +31,4 @@ public class ConsultationDto {
                 .rdv(consultation.getRdv())
                 .build();
     }
-
 }

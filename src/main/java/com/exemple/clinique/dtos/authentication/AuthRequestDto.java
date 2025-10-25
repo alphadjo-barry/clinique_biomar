@@ -1,4 +1,4 @@
-package com.exemple.clinique.dtos;
+package com.exemple.clinique.dtos.authentication;
 
 public record AuthRequestDto(
         String email,

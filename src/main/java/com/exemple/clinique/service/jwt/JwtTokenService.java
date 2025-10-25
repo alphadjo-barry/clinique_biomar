@@ -27,22 +27,16 @@ public class JwtTokenService {
 
     public String generateToken(String username, String password) {
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(username, password);
-
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticateUser(authenticationToken);
 
         return createToken(authentication);
     }
 
-    public Authentication authenticateUser(UsernamePasswordAuthenticationToken authenticationtoken) {
+    private Authentication authenticateUser(UsernamePasswordAuthenticationToken authenticationtoken) {
         try
-        {
-            return  authenticationManager.authenticate(authenticationtoken);
-        }
-        catch (Exception e){
-            throw new BadCredentialsException("Invalid username or password");
-        }
+        {return  authenticationManager.authenticate(authenticationtoken);}
+        catch (Exception e){throw new BadCredentialsException("Username or password is incorrect.");}
     }
 
     private String createToken(Authentication authentication) {
@@ -51,18 +45,22 @@ public class JwtTokenService {
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toSet());
 
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .subject(authentication.getName())
-                .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusSeconds(60 * 30)) // 30 Minutes
-                .claim("roles", authorities)
-                .build();
+        JwtClaimsSet claims = getClaimsFromToken(authentication, authorities);
 
         JwsHeader jwsHeader =  JwsHeader.with(MacAlgorithm.HS256).build();
 
         return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
     }
 
+    private JwtClaimsSet getClaimsFromToken(Authentication authentication, Set<String> authorities) {
 
+        return JwtClaimsSet.builder()
+                .subject(authentication.getName())
+                .issuedAt(Instant.now())
+                .expiresAt(Instant.now().plusSeconds(60 * 30)) // 30 Minutes
+                .claim("roles", authorities)
+                .build();
+
+    }
 
 }

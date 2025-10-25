@@ -1,6 +1,6 @@
 package com.exemple.clinique.controller;
 
-import com.exemple.clinique.dtos.AuthRequestDto;
+import com.exemple.clinique.dtos.authentication.AuthRequestDto;
 import com.exemple.clinique.dtos.jwtToken.JwtToken;
 import com.exemple.clinique.service.jwt.JwtTokenService;
 import lombok.AllArgsConstructor;

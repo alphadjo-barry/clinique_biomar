@@ -20,7 +20,7 @@ public class SendValidationNotificationService {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            helper.setFrom("no-reply@clinique.fr");
+            helper.setFrom("no-reply@clinique-kouyan.gn");
             helper.setTo(validation.getUtilisateur().getEmail());
             helper.setSubject("Validation de votre compte");
             String htmlContent = "<!DOCTYPE html>" +
@@ -58,11 +58,9 @@ public class SendValidationNotificationService {
                     "        }" +
                     "        .code-box {" +
                     "            display: inline-block;" +
-                    "            font-size: 22px;" +
+                    "            font-size: 16px;" +
                     "            font-weight: bold;" +
-                    "            padding: 12px 24px;" +
-                    "            background: linear-gradient(135deg, #007BFF, #0056b3);" +
-                    "            color: #ffffff;" +
+                    "            color: red;" +
                     "            border-radius: 8px;" +
                     "            margin: 25px 0;" +
                     "            letter-spacing: 2px;" +
@@ -83,7 +81,7 @@ public class SendValidationNotificationService {
                     "        <p>Bonjour,</p>" +
                     "        <p>Merci pour votre inscription 🎉<br>" +
                     "        Pour valider votre compte, utilisez le code ci-dessous :</p>" +
-                    "        <div class='code-box'>" + validation.getCode() + "</div>" +
+                    "        <div class='code-box'>Code : " + validation.getCode() + "</div>" +
                     "        <p class='footer'>Si vous n'avez pas créé de compte, vous pouvez ignorer cet e-mail.</p>" +
                     "    </div>" +
                     "</body>" +

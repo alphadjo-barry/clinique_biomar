@@ -1,11 +1,13 @@
 package com.exemple.clinique.controller;
 
-import com.exemple.clinique.dtos.ValidationRequest;
+import com.exemple.clinique.dtos.utilisateurs.PasswordRequest;
+import com.exemple.clinique.dtos.validations.ValidationRequest;
 import com.exemple.clinique.dtos.utilisateurs.UtilisateurDto;
 import com.exemple.clinique.service.contracts.UtilisateurService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,20 +45,27 @@ public class UtilisateurController {
         return ResponseEntity.ok(utilisateurService.save(utilisateurDto));
     }
 
-    @PatchMapping("/validated")
+    @PatchMapping("/activation")
     public ResponseEntity<?> enableAccount(@RequestBody ValidationRequest code){
         utilisateurService.enabledAccount(code);
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/enable")
     public ResponseEntity<?> enabledById(@RequestBody Long id){
         return ResponseEntity.ok(utilisateurService.enabledById(id));
     }
 
+    @PreAuthorize( "hasRole('ADMIN')")
     @PatchMapping("/disable")
     public ResponseEntity<?> disableById(@RequestBody Long id){
         return ResponseEntity.ok(utilisateurService.disabledById(id));
     }
 
+    @PatchMapping("/password")
+    public void passwordChange(@RequestBody PasswordRequest passwordRequest){
+          utilisateurService.passwordChange(passwordRequest);
+          ResponseEntity.ok();
+    }
 }

@@ -25,5 +25,5 @@ public class Adresse extends AbstractEntity{
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    private boolean isMain = false;
+    private boolean isActualAddress = false;
 }

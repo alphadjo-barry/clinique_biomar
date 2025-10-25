@@ -1,6 +1,7 @@
 package com.exemple.clinique.service.impl;
 
-import com.exemple.clinique.dtos.ValidationRequest;
+import com.exemple.clinique.dtos.utilisateurs.PasswordRequest;
+import com.exemple.clinique.dtos.validations.ValidationRequest;
 import com.exemple.clinique.dtos.utilisateurs.UtilisateurDto;
 import com.exemple.clinique.entity.Role;
 import com.exemple.clinique.entity.Utilisateur;
@@ -13,6 +14,8 @@ import com.exemple.clinique.service.contracts.ValidationService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,12 +44,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public void update(Long id, UtilisateurDto utilisateurDto) {
 
         Utilisateur utilisateur = this.utilisateurRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Utilisateur not found !")
-        );
+                () -> new EntityNotFoundException("Utilisateur not found !"));
 
         Utilisateur other =  this.utilisateurRepository.findByEmail(utilisateurDto.getEmail()).orElse(null);
         if(other != null && !other.getId().equals(id)){
-            throw new IllegalArgumentException("Utilisateur already exists");
+            throw new IllegalArgumentException("Utilisateur already exists with other user");
         }
 
         utilisateur.setEmail(utilisateurDto.getEmail());
@@ -54,46 +56,32 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         this.utilisateurRepository.save(utilisateur);
     }
 
-
     @Override
     public UtilisateurDto findById(Long id) {
         return this.utilisateurRepository.findById(id)
                 .map(UtilisateurDto::fromEntity)
                 .orElseThrow(()-> new EntityNotFoundException("Utilisateur not found !"));
+
     }
 
     // Créer par tout le monde
     @Override
     public UtilisateurDto save(UtilisateurDto utilisateurDto) {
-        return saveWithRole(utilisateurDto, RoleType.PATIENT);
+        return saveWithRole(utilisateurDto);
     }
 
-    // Créer par admin
-    @Override
-    public UtilisateurDto saveMedecin(UtilisateurDto utilisateurDto) {
-        return saveWithRole(utilisateurDto, RoleType.MEDECIN);
-    }
+    private UtilisateurDto saveWithRole(UtilisateurDto utilisateurDto) {
 
-    // Créer par admin
-    @Override
-    public UtilisateurDto saveSecretaire(UtilisateurDto utilisateurDto) {
-        return saveWithRole(utilisateurDto, RoleType.SECRETAIRE);
-    }
-
-    // Créer par admin
-    @Override
-    public UtilisateurDto saveAdmin(UtilisateurDto utilisateurDto) {
-        return saveWithRole(utilisateurDto, RoleType.ADMIN);
-    }
-
-    private UtilisateurDto saveWithRole(UtilisateurDto utilisateurDto, RoleType roleType) {
+        if(utilisateurRepository.findByEmail(utilisateurDto.getEmail()).isPresent()){
+            throw new IllegalArgumentException("Utilisateur already exists");
+        }
 
         Utilisateur utilisateur = UtilisateurDto.toEntity(utilisateurDto);
         utilisateur.setPassword(bCryptPasswordEncoder.encode(utilisateurDto.getPassword()));
 
-        Role role = roleRepository.findByName(roleType.name())
+        Role role = roleRepository.findByName(RoleType.MEDECIN.name())
                 .orElseGet(() -> roleRepository.save(Role.builder()
-                        .name(roleType.name())
+                        .name(RoleType.MEDECIN.name())
                         .build()));
 
         utilisateur.setRoles(new HashSet<>(Collections.singletonList(role)));
@@ -119,7 +107,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Validation validation = validationService.findByCode(request.code());
 
         if(validation.getExpiredAt().isBefore(Instant.now())){
-            throw new IllegalArgumentException("Validation code is expired");
+            throw new IllegalArgumentException("The code that is have is expired");
         }
 
         Utilisateur utilisateur = validation.getUtilisateur();
@@ -145,7 +133,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         }
 
         utilisateur.setActive(true);
-
         return this.utilisateurRepository.save(utilisateur).isActive();
     }
 
@@ -160,8 +147,28 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         }
 
         utilisateur.setActive(false);
-
         return this.utilisateurRepository.save(utilisateur).isActive();
+    }
 
+    /**
+     * @param passwordRequest The new password the user wants to set
+     */
+    @Override
+    public void passwordChange(PasswordRequest passwordRequest) {
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Utilisateur utilisateur =  utilisateurRepository.findByEmail(userDetails.getUsername()).orElseThrow(
+                ()-> new EntityNotFoundException("Utilisateur not found !"));
+
+        if(!bCryptPasswordEncoder.matches(passwordRequest.oldPassword(), utilisateur.getPassword())){
+            throw new IllegalArgumentException("Old password is incorrect");
+        }
+
+        if (passwordRequest.newPassword().length() < 8){
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
+        }
+
+        utilisateur.setPassword(bCryptPasswordEncoder.encode(passwordRequest.newPassword()));
+        utilisateurRepository.save(utilisateur);
     }
 }

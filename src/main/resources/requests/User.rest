@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
   "email": "alphadiobiya@gmail.com",
-  "password": "123456789"
+  "password": "Alphadjo30901@"
 }
 
 ###
@@ -28,15 +28,14 @@ Content-Type: application/json
 
 GET  http://localhost:8080/api/v1/utilisateurs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbHBoYWRpb2JpeWFAZ21haWwuY29tIiwiZXhwIjoxNzU4NDExOTE5LCJpYXQiOjE3NTg0MTAxMTksInJvbGVzIjpbIlJPTEVfQURNSU4iXX0.QSPaN8btg1OpXCbjLJSUEDkJb8PJGjxmjLwuPx5wAIs
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbHBoYWRpb2JpeWFAZ21haWwuY29tIiwiZXhwIjoxNzU5NzczMjcyLCJpYXQiOjE3NTk3NzE0NzIsInJvbGVzIjpbIlJPTEVfUEFUSUVOVCJdfQ.2Dm9SHpu77Mp1XsiBvAutT_Il6ZnGLMGi7KtyFPzUl4
 
 ###
 // Get users by id
 
-GET  http://localhost:8080/api/v1/utilisateurs/2
+GET  http://localhost:8080/api/v1/utilisateurs/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbHBoYWRpb2JpeWFAZ21haWwuY29tIiwiZXhwIjoxNzU4NDA3MzQ1LCJpYXQiOjE3NTg0MDU1NDUsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.OMs6KYkcJqsT76DZZkCqQcBMkfUTz9TWeMnvJDG3sFM
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbHBoYWRpb2JpeWFAZ21haWwuY29tIiwiZXhwIjoxNzU5NzczMjcyLCJpYXQiOjE3NTk3NzE0NzIsInJvbGVzIjpbIlJPTEVfUEFUSUVOVCJdfQ.2Dm9SHpu77Mp1XsiBvAutT_Il6ZnGLMGi7KtyFPzUl4
 
 ###
 
@@ -47,7 +46,7 @@ Content-Type: application/json
 
 {
   "email": "alphadiobiya@gmail.com",
-  "password": "123456789"
+  "password": "Alphadjo30901@"
 }
 
 ###
@@ -57,10 +56,9 @@ POST  http://localhost:8080/api/v1/utilisateurs
 Content-Type: application/json
 
 {
-"email": "diallo.habibatou2710@gmail.com",
-"password": "123456789"
+  "email": "diallo.habibatou2710@gmail.com",
+  "password": "Alphadjo30901@"
 }
-
 
 ###
 
@@ -70,7 +68,24 @@ PATCH http://localhost:8080/api/v1/utilisateurs/enable
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbHBoYWRpb2JpeWFAZ21haWwuY29tIiwiZXhwIjoxNzU4NDExOTE5LCJpYXQiOjE3NTg0MTAxMTksInJvbGVzIjpbIlJPTEVfQURNSU4iXX0.QSPaN8btg1OpXCbjLJSUEDkJb8PJGjxmjLwuPx5wAIs
 
-2
+###
 
+// account acviation by user
 
+PATCH http://localhost:8080/api/v1/utilisateurs/activation
+Content-Type: application/json
+
+{
+    "code": "447900"
+}
+
+###
+
+// password
+
+PATCH http://localhost:8080/api/v1/utilisateurs/password
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbHBoYWRpb2JpeWFAZ21haWwuY29tIiwiZXhwIjoxNzYxNDAxMDI5LCJpYXQiOjE3NjEzOTkyMjksInJvbGVzIjpbIlJPTEVfTUVERUNJTiJdfQ.pqrH-TC8Z8t0jR7IO1OjmyhvGD0GBXtzKHYCnW3TjlI
+
+{}
 

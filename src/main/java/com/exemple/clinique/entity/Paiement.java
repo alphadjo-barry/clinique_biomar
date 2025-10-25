@@ -1,4 +1,5 @@
 package com.exemple.clinique.entity;
 
-public class Paiement {
+public class Paiement extends AbstractEntity {
+
 }

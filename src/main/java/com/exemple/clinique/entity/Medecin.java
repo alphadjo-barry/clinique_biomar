@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter
@@ -24,7 +22,10 @@ public class Medecin extends AbstractEntity{
 
     private String firstName;
 
-    private String address;
+    @ManyToMany
+    @JoinTable(name = "medecin_adresses", joinColumns = @JoinColumn(name = "medecin_id"),
+    inverseJoinColumns = @JoinColumn(name="adresse_id"))
+    private List<Adresse> adresses;
 
     @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
@@ -42,5 +43,5 @@ public class Medecin extends AbstractEntity{
     @JoinTable(name = "medecin_disponibilites",
     joinColumns = @JoinColumn(name = "medecin_id"),
     inverseJoinColumns = @JoinColumn(name = "disponibilite_id"))
-    private List<Disponibilite> disponibilites = new ArrayList<>();
+    private Set<Disponibilite> disponibilites = new HashSet<>();
 }

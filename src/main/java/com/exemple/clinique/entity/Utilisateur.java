@@ -29,6 +29,10 @@ public class Utilisateur extends AbstractEntity implements UserDetails {
     @JoinTable(name = "utilisateur_role", joinColumns = @JoinColumn(name = "utilisateur_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "utilisateur_adresse", joinColumns = @JoinColumn(name = "utilisateur_id"), inverseJoinColumns = @JoinColumn(name ="adresse_id"))
+    private Set<Adresse> adresse = new HashSet<>();
+
     private boolean isActive = false;
 
     @Override

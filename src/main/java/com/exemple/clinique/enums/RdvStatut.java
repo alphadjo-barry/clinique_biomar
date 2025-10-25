@@ -1,7 +1,7 @@
-package com.exemple.clinique.entity;
+package com.exemple.clinique.enums;
 
 public enum RdvStatut {
-    CONFIRME,
-    ANNULE,
-    EN_ATTENTE
+    CONFIRMED,
+    CANCELLED,
+    PENDING,
 }
