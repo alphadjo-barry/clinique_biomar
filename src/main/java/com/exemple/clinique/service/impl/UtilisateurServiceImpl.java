@@ -14,9 +14,11 @@ import com.exemple.clinique.service.contracts.ValidationService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -150,25 +152,23 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return this.utilisateurRepository.save(utilisateur).isActive();
     }
 
-    /**
-     * @param passwordRequest The new password the user wants to set
-     */
     @Override
     public void passwordChange(PasswordRequest passwordRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Utilisateur utilisateur =  utilisateurRepository.findByEmail(userDetails.getUsername()).orElseThrow(
-                ()-> new EntityNotFoundException("Utilisateur not found !"));
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new EntityNotFoundException("No one logged in user !"));
 
-        if(!bCryptPasswordEncoder.matches(passwordRequest.oldPassword(), utilisateur.getPassword())){
+        if (!bCryptPasswordEncoder.matches(passwordRequest.oldPassword(), utilisateur.getPassword())) {
             throw new IllegalArgumentException("Old password is incorrect");
         }
 
-        if (passwordRequest.newPassword().length() < 8){
+        if (passwordRequest.newPassword().length() < 8) {
             throw new IllegalArgumentException("Password must be at least 8 characters long");
         }
 
         utilisateur.setPassword(bCryptPasswordEncoder.encode(passwordRequest.newPassword()));
         utilisateurRepository.save(utilisateur);
     }
+
 }

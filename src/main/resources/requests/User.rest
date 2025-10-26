@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
   "email": "alphadiobiya@gmail.com",
-  "password": "Alphadjo30901@"
+  "password": "Alphadjo30901!"
 }
 
 ###
@@ -85,7 +85,10 @@ Content-Type: application/json
 
 PATCH http://localhost:8080/api/v1/utilisateurs/password
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbHBoYWRpb2JpeWFAZ21haWwuY29tIiwiZXhwIjoxNzYxNDAxMDI5LCJpYXQiOjE3NjEzOTkyMjksInJvbGVzIjpbIlJPTEVfTUVERUNJTiJdfQ.pqrH-TC8Z8t0jR7IO1OjmyhvGD0GBXtzKHYCnW3TjlI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbHBoYWRpb2JpeWFAZ21haWwuY29tIiwiZXhwIjoxNzYxNDg4OTEyLCJpYXQiOjE3NjE0ODcxMTIsInJvbGVzIjpbIlJPTEVfTUVERUNJTiJdfQ._QlIoEFPK6iBN-gAtpeaa371yG9UFKVrjFFTOfjGVqs
 
-{}
+{
+  "oldPassword": "Alphadjo30901@",
+  "newPassword": "Alphadjo30901!"
+}
 
