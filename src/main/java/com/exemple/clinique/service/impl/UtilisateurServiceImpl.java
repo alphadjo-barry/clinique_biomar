@@ -16,9 +16,9 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.jwt.Jwt;
+
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -66,7 +66,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     }
 
-    // Créer par tout le monde
+    // accessible for all users
     @Override
     public UtilisateurDto save(UtilisateurDto utilisateurDto) {
         return saveWithRole(utilisateurDto);
@@ -153,10 +153,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public void passwordChange(PasswordRequest passwordRequest) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public String passwordChange(PasswordRequest passwordRequest) {
 
-        Utilisateur utilisateur = utilisateurRepository.findByEmail(authentication.getName())
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(getLoggedInUsername())
                 .orElseThrow(() -> new EntityNotFoundException("No one logged in user !"));
 
         if (!bCryptPasswordEncoder.matches(passwordRequest.oldPassword(), utilisateur.getPassword())) {
@@ -169,6 +168,18 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
         utilisateur.setPassword(bCryptPasswordEncoder.encode(passwordRequest.newPassword()));
         utilisateurRepository.save(utilisateur);
+
+        return "Password has been changed successfully";
+    }
+
+    private String getLoggedInUsername(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication != null && authentication.isAuthenticated()){
+            return authentication.getName();
+        }
+
+        return null;
     }
 
 }

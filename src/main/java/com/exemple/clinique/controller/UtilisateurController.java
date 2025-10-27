@@ -64,8 +64,8 @@ public class UtilisateurController {
     }
 
     @PatchMapping("/password")
-    public void passwordChange(@RequestBody PasswordRequest passwordRequest){
-          utilisateurService.passwordChange(passwordRequest);
-          ResponseEntity.ok();
+    public ResponseEntity<?> passwordChange(@RequestBody PasswordRequest passwordRequest){
+
+          return ResponseEntity.ok(utilisateurService.passwordChange(passwordRequest));
     }
 }

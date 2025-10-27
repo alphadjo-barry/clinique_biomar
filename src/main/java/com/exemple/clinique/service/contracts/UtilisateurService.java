@@ -11,5 +11,5 @@ public interface UtilisateurService extends AbstractService<UtilisateurDto> {
         boolean disabledById(Long id);
 
         void enabledAccount(ValidationRequest request);
-        void passwordChange(PasswordRequest request);
+        String passwordChange(PasswordRequest request);
 }
